@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, jsonify
+from wordcloud import WordCloud, STOPWORDS
 from flask_cors import CORS, cross_origin
 from textblob import TextBlob
 import tweepy
@@ -8,13 +9,12 @@ auth.set_access_token(config.access_token, config.access_token_secret)
 api = tweepy.API(auth)
 app = Flask(__name__)
 cors = CORS(app)
-@app.route('/sentiment_analysis')
+@app.route('/sentiment_analysis/<twitter_handle>')
 @cross_origin()
-def return_sentiment_analysis():
-    trump = api.get_user('realDonaldTrump')
-    trump_name = trump.screen_name
-    #handle = twitter_handle
-    tweets = api.user_timeline(screen_name=trump_name, count=200,  include_rts = False, tweet_mode = 'extended')
+def return_sentiment_analysis(twitter_handle):
+    user = api.get_user(twitter_handle)
+    name = user.screen_name
+    tweets = api.user_timeline(screen_name=name, count=200,  include_rts = False, tweet_mode = 'extended')
     tweets_list = [tweet.full_text for tweet in tweets]
     for tweet in tweets_list:
         sentiment = TextBlob(tweet)
@@ -29,5 +29,26 @@ def return_sentiment_analysis():
         "values_": values,
     }
     return jsonify(data)
+@app.route('/word_cloud/<twitter_handle>')
+@cross_origin()
+def return_word_cloud(twitter_handle):
+    user = api.get_user(twitter_handle)
+    name = user.screen_name
+    tweets = api.user_timeline(screen_name=name, count=200,  include_rts = False, tweet_mode = 'extended')
+    stopwords = set(STOPWORDS)
+    tweets_text = str([tweet.full_text for tweet in tweets])
+    user = api.get_user(twitter_handle)
+    name = user.screen_name
+    stopwords.update(['https', 't', 'co', 'many'])
+    word_cloud = WordCloud(stopwords=stopwords, max_words=10, \
+                      background_color="azure").generate(trump_tweets_text)
+    words = word_cloud.words_
+    return jsonify(words)
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    if request.method == 'POST':
+        name = request.form['name']
+        return render_template('result.html', name=name)
+    return render_template('index.html')
 if __name__ == "__main__":
     app.run(debug=True)

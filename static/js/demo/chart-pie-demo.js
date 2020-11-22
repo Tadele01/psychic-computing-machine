@@ -4,7 +4,7 @@ Chart.defaults.global.defaultFontColor = '#858796';
 
 // Pie Chart Example
 var ctx = document.getElementById("myPieChart");
-const url = "http://127.0.0.1:5000/sentiment_analysis";
+const url = "http://127.0.0.1:5000/sentiment_analysis/realDonaldTrump";
 var json_from_api;
 var myPieChart;
 fetch(url)
