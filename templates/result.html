@@ -22,7 +22,7 @@
 
 </head>
 
-<body id="page-top">
+<body id="page-top" ">
 
     <div id="wrapper">
         <div id="content-wrapper" class="d-flex flex-column">
@@ -43,15 +43,33 @@
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input style="display: inline;" type="text" class="form-control bg-light border-0 small" placeholder="Search for specific word ..."
-                                aria-label="Search" aria-describedby="basic-addon2">
+                                aria-label="Search" aria-describedby="basic-addon2" name="word" id="word">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
+                                <button class="btn btn-primary" type="button" id="word_search">
                                     <i class="fas fa-search fa-sm"></i>
                                 </button>
                             </div>
-                            
+                            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+                            <script type=text/javascript>
+                                var word = document.getElementById("word").value;
+                                var occurence;
+                                var url_ = 'http://127.0.0.1:5000/word/occurence/' + word;
+                                $(function() {
+                                $('button#word_search').on('click', function(e) {
+                                    e.preventDefault()
+                                    $.getJSON(url_,
+                                        function(data) {
+                                            occurence = data.occurence;
+                                    });
+                                    return false;
+                                });
+                                });
+                                {%
+                                    set word_occurence = occurence
+                                %}               
+                            </script>
                         </div>
-                        <p class="float-right" name="number_of_occurence">Number of occurence : {{occurence}}</p>
+                        <p class="float-right" name="number_of_occurence" id="number_of_occurence">Number of occurence : {{word_occurence}}</p>
                     </form>
 
                     <!-- Topbar Navbar -->
@@ -242,7 +260,7 @@
         <!-- End of Content Wrapper -->
 
     </div>
-
+    
     <script src="../static/vendor/jquery/jquery.min.js"></script>
     <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
