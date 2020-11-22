@@ -9,6 +9,27 @@ auth.set_access_token(config.access_token, config.access_token_secret)
 api = tweepy.API(auth)
 app = Flask(__name__)
 cors = CORS(app)
+def cluster(twitter_handle):
+    user = api.get_user(twitter_handle)
+
+def total_followers(twitter_handle):
+    user = api.get_user(twitter_handle)
+    total_followers = user.followers_count
+    return total_followers
+def most_used_word(twitter_handle):
+    user = api.get_user(twitter_handle)
+    name = user.screen_name
+    tweets = api.user_timeline(screen_name=name, count=200,  include_rts = False, tweet_mode = 'extended')
+    stopwords = set(STOPWORDS)
+    tweets_text = str([tweet.full_text for tweet in tweets])
+    user = api.get_user(twitter_handle)
+    name = user.screen_name
+    stopwords.update(['https', 't', 'co', 'many'])
+    word_cloud = WordCloud(stopwords=stopwords, max_words=10, \
+                      background_color="azure").generate(trump_tweets_text)
+    most_used = list(word_cloud.words_.keys())[0]
+    return most_used
+
 @app.route('/sentiment_analysis/<twitter_handle>')
 @cross_origin()
 def return_sentiment_analysis(twitter_handle):

@@ -42,14 +42,16 @@
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                            <input style="display: inline;" type="text" class="form-control bg-light border-0 small" placeholder="Search for specific word ..."
                                 aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button">
                                     <i class="fas fa-search fa-sm"></i>
                                 </button>
                             </div>
+                            
                         </div>
+                        <p class="float-right" name="number_of_occurence">Number of occurence : {{occurence}}</p>
                     </form>
 
                     <!-- Topbar Navbar -->
@@ -94,7 +96,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Twitter</h1>
+                        <h1 class="h3 mb-0 text-gray-800">{{name}}</h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="text-white-50"></i> Follow</a>
                     </div>
@@ -110,7 +112,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Most used word</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{}}</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{most_used}}</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class=" text-gray-300"></i>
@@ -128,7 +130,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Followers</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{}}</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{followers}}</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="text-gray-300"></i>
@@ -148,7 +150,7 @@
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{}}</div>
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{follows}}</div>
                                                 </div>
                                                 
                                             </div>
@@ -169,7 +171,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                 Total Tweets</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{}}</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{total_tweets}}</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="text-gray-300"></i>
