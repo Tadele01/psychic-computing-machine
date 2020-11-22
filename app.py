@@ -4,6 +4,7 @@ from flask_cors import CORS, cross_origin
 from textblob import TextBlob
 import tweepy
 import config
+import logging
 auth = tweepy.OAuthHandler(config.consumer_key, config.consumer_secret)
 auth.set_access_token(config.access_token, config.access_token_secret)
 api = tweepy.API(auth)
@@ -26,7 +27,7 @@ def most_used_word(twitter_handle):
     name = user.screen_name
     stopwords.update(['https', 't', 'co', 'many'])
     word_cloud = WordCloud(stopwords=stopwords, max_words=10, \
-                      background_color="azure").generate(trump_tweets_text)
+                      background_color="azure").generate(tweets_text)
     most_used = list(word_cloud.words_.keys())[0]
     return most_used
 
@@ -62,14 +63,18 @@ def return_word_cloud(twitter_handle):
     name = user.screen_name
     stopwords.update(['https', 't', 'co', 'many'])
     word_cloud = WordCloud(stopwords=stopwords, max_words=10, \
-                      background_color="azure").generate(trump_tweets_text)
+                      background_color="azure").generate(tweets_text)
     words = word_cloud.words_
     return jsonify(words)
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
+        logging.critical("hi")
         name = request.form['name']
-        return render_template('result.html', name=name)
+        followers = total_followers(name)
+        used_word = most_used_word(name)
+        #cluster = cluster(name)
+        return render_template('result.html', name=name, followers=followers, most_used=used_word, cluster="postive")
     return render_template('index.html')
 if __name__ == "__main__":
     app.run(debug=True)

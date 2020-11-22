@@ -5,5 +5,5 @@ __pycache__/
 static/vendor
 static/scss
 static/css/sb-admin-2.min.css
-
+app.pyc
 
